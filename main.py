@@ -14,7 +14,7 @@ gen = genetyczny.Genetyczny(tab)
 start = time.clock()
 int = random.randint(0, 100)
 
-print(tab, "\n\n")
+#print(tab, "\n\n")
 #TS = tabu.Tabu(tab, 7, 1000)
 
 gen.select_start_point()

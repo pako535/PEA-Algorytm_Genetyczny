@@ -1,7 +1,9 @@
-
+import random
+import math
 class Genetyczny:
     def __init__(self, tab):
         self.tab = tab
+        self.crossPMX()
 
 
 
@@ -50,6 +52,31 @@ class Genetyczny:
         return x0
 
     # Metody krzyżowania
+
+    def crossPMX(self):
+
+        x = [1, 2, 3, 4, 5, 6, 7, 8]
+        y = [3, 2, 1, 4, 5, 6, 8, 7]
+
+        # wybór zakrezu do krzyżowania
+        while True:
+            _range1 = random.choice(range(len(x)))
+            _range2 = random.choice(range(len(x)))
+            if _range1 != _range2 and math.fabs(_range2 - _range1) > 1:
+                break
+
+        if _range1 > _range2:
+            temp = _range1
+            _range1 = _range2
+            _range2 = temp
+
+        child1 = y[_range1:_range2]
+        child2 = x[_range1:_range2]
+
+
+        print(_range1, " ", _range2)
+        print(child1, " ", child2)
+
 
     # Metoda mutacji
 
