@@ -73,6 +73,13 @@ class Genetyczny:
         child1 = y[_range1:_range2]
         child2 = x[_range1:_range2]
 
+        print(child1)
+
+        for i in range(_range1 + 1, -1, -1):
+            print(i)
+            if x[i] not in child1:
+                child1.insert(0, x[i])
+
 
         print(_range1, " ", _range2)
         print(child1, " ", child2)
