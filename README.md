@@ -1,0 +1,1 @@
+PEA-Algorytm_Genetyczny
