@@ -10,14 +10,14 @@ import genetyczny
 
 #tab = macierz.creatematrix_TSP('gr120.tsp')
 tab = macierz.creatematrix_ATSP('br17.atsp')
-gen = genetyczny.Genetyczny(tab)
+gen = genetyczny.Genetyczny(tab, 0.01)
 start = time.clock()
 int = random.randint(0, 100)
 
-#print(tab, "\n\n")
+print("\n\n",tab, "\n\n")
 #TS = tabu.Tabu(tab, 7, 1000)
 
-gen.select_start_point()
+# gen.generateTheInitialPopulation()
 
 end = time.clock()
 total = end - start
