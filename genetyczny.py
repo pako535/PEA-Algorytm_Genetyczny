@@ -1,5 +1,6 @@
 import random
 import math
+import copy
 
 class Genetyczny:
     def __init__(self, tab, probability, populationSize):
@@ -91,26 +92,31 @@ class Genetyczny:
         child2 = x[_range1:_range2]
 
         # map = dict(zip(child2, child1))
-        map = [child2, child1]
-        # print(child1)
-        # print(child2)
-        # print(map)
+        map = [copy.copy(child2), copy.copy(child1)]
+        dl = len(child1)
+
 
         # Wypełnienie dziecka bezkonfliktowymi elementami
-
+        flag = False
         # Dziecka 1
         for i in range(_range1 - 1, -1, -1):
             if x[i] not in child1:
                 child1.insert(0, x[i])
             else:
-                for a, b in map.items():
-                    if map[a] == x[i]:
-                        if a not in child1:
-                            child1.insert(0, a)
+                for j in range(dl):    # child1 jest tylko dla rozmiaru nalezy przeszukiwać mape
+                    if map[1][j] == x[i]:
+                        tmp = map[0][j]
+                        if tmp not in child1:
+                            child1.insert(0, tmp)
+                            break
                         else:
-                            for q,e in map.items():
-                                if map[q] == a:
-                                    child1.insert(0, q)
+                            try:
+                                child1.insert(0, map[0][map[1].index(tmp)])
+                            except:
+                                child1.insert(0 ,'_')
+                                flag = True
+
+
 
 
 
@@ -118,56 +124,80 @@ class Genetyczny:
             if x[i] not in child1:
                 child1.append(x[i])
             else:
-                for a, b in map.items():
-                    if map[a] == x[i]:
-                        if a not in child1:
-                            child1.append(a)
+                for j in range(dl):    # child1 jest tylko dla rozmiaru nalezy przeszukiwać mape
+                    if map[1][j] == x[i]:
+                        tmp = map[0][j]
+                        if tmp not in child1:
+                            child1.append(tmp)
+                            break
                         else:
-                            for q, e in map.items():
-                                if map[q] == a:
-                                    child1.append(q)
+                            try:
+                                child1.append(map[0][map[1].index(tmp)])
+                            except:
+                                child1.append('_')
+                                flag = True
 
+        if flag == True:
+            self.repairCross(child1)
 
+        flag = False
         # Dziecka 2
         for i in range(_range1 - 1, -1, -1):
             if y[i] not in child2:
                 child2.insert(0, y[i])
             else:
-                if map[y[i]] not in child2:
-                    child2.insert(0, map[y[i]])
-                else:
-                    tmp = map[y[i]]
-                    for a, b in map.items():
-                        if b == tmp:
-                            if a not in child2:
-                                child2.insert(0, a)
-                            else:
-                                for q, e in map.items():
-                                    if q == a:
-                                        child2.insert(0, map[e])
+                for j in range(dl):    # child1 jest tylko dla rozmiaru nalezy przeszukiwać mape
+                    if map[0][j] == y[i]:
+                        tmp = map[1][j]
+                        if tmp not in child2:
+                            child2.insert(0, tmp)
+                            break
+                        else:
+                            try:
+                                child2.insert(0, map[1][map[0].index(tmp)])
+                            except:
+                                child2.insert(0, '_')
+                                flag = True
 
         for i in (range(_range2, len(x))):
             if y[i] not in child2:
                 child2.append(y[i])
             else:
-                if map[y[i]] not in child2:
-                    child2.append(map[y[i]])
-                else:
-                    tmp = map[y[i]]
-                    for a, b in map.items():
-                        if b == tmp:
-                            if a not in child2:
-                                child2.append(a)
-                            else:
-                                for q, e in map.items():
-                                    if q == tmp:
-                                        child2.append(e)
+                for j in range(dl):  # child1 jest tylko dla rozmiaru nalezy przeszukiwać mape
+                    if map[0][j] == y[i]:
+                        tmp = map[1][j]
+                        if tmp not in child2:
+                            child2.append(tmp)
+                            break
+                        else:
+                            try:
+                                child2.append(map[1][map[0].index(tmp)])
+                            except:
+                                child2.append('_')
+                                flag = True
+        if flag == True:
+            self.repairCross(child2)
+
 
         chrom1 = Chromosome()
         chrom1.path = child1
         chrom2 = Chromosome()
         chrom2.path = child2
         return chrom1, chrom2
+
+    def repairCross(self, x):
+
+        tab = []
+        for i in range(len(x)):
+            if i not in x:
+                tab.append(i)
+
+        for i in range(len(x)):
+            if x[i] == '_':
+                x[i] = random.choice(tab)
+                tab.remove(x[i])
+
+        return x
 
     def crossAll(self):
         tmp = []
