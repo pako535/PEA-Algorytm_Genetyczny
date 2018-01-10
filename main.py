@@ -10,7 +10,7 @@ import genetyczny
 
 #tab = macierz.creatematrix_TSP('gr120.tsp')
 tab = macierz.creatematrix_ATSP('br17.atsp')
-gen = genetyczny.Genetyczny(tab, 0.01)
+gen = genetyczny.Genetyczny(tab, 0.01, 50)
 start = time.clock()
 int = random.randint(0, 100)
 

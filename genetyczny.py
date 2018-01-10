@@ -2,13 +2,15 @@ import random
 import math
 
 class Genetyczny:
-    def __init__(self, tab, probability):
+    def __init__(self, tab, probability, populationSize):
         self.tab = tab
         self.currentPopulation = []
+
         self.probabilityOfMutation = probability
+        self.populationSize = populationSize
         # generowanie populacji początkowej
         self.generateTheInitialPopulation()
-
+        self.ifBetter = 0
         self.bestSolution = self.currentPopulation[0].path
         self.bestValue = self.currentPopulation[0].valueOfPath
 
@@ -16,42 +18,45 @@ class Genetyczny:
 
 
     def run(self):
-        self.currentPopulation = self.selection()
-        self.crossAll()
-        self.mutationAll()
-        self.rateAll()
-        self.displayPopulation()
+        while(self.ifBetter < 30):
+            self.selection()
+            self.crossAll()
+            self.mutationAll()
+            self.rateAll()
+            # # self.displayPopulation()
 
-        self.displayBest()
 
     def generateTheInitialPopulation(self):
         # sizePopulation = len(self.tab
 
 
-        for i in range(len(self.tab)):
+        for i in range(self.populationSize):
             chrom = Chromosome()
             chrom.generate(self.tab)
             self.currentPopulation.append(chrom)
 
+
+        print("GENERACJA POCZĄTKOWA")
         for i in range(len(self.currentPopulation)):
             print(self.currentPopulation[i].path," ", self.currentPopulation[i].valueOfPath)
 
     # Metoda Selekcji Turniejowej
 
     def selection(self):
+        self.podglad = {}
         newPopulation = []
-        for i in range(len(self.tab)):
+        for i in range(self.populationSize):
             group = []
             value = []
-            for j in range(int(len(self.tab)*0.6)):
+            for j in range(len(self.tab)):
                 tmp = random.choice(self.currentPopulation)
                 group.append(tmp)
                 value.append(tmp.valueOfPath)
             mini = min(value)
             chose = group[value.index(mini)]
             newPopulation.append(chose)
-
-        return newPopulation
+            self.podglad[mini] = chose
+        self.currentPopulation = newPopulation
 
     # Metody krzyżowania
 
@@ -85,8 +90,8 @@ class Genetyczny:
         child1 = y[_range1:_range2]
         child2 = x[_range1:_range2]
 
-        map = dict(zip(child2, child1))
-
+        # map = dict(zip(child2, child1))
+        map = [child2, child1]
         # print(child1)
         # print(child2)
         # print(map)
@@ -158,16 +163,25 @@ class Genetyczny:
                                     if q == tmp:
                                         child2.append(e)
 
-        # print(_range1, " ", _range2)
-        # print(child1, "\n", child2)
+        chrom1 = Chromosome()
+        chrom1.path = child1
+        chrom2 = Chromosome()
+        chrom2.path = child2
+        return chrom1, chrom2
 
     def crossAll(self):
+        tmp = []
         for i in self.currentPopulation:
              try:
-                self.crossPMX(i.path, next(i.path))
+                x = self.crossPMX(i.path, next(i.path))
+                tmp.append(x[0])
+                tmp.append(x[1])
              except:
-                 self.crossPMX(i.path, self.currentPopulation[0].path)
-        # self.displayPopulation()
+                 x = self.crossPMX(i.path, self.currentPopulation[0].path)
+                 tmp.append(x[0])
+                 tmp.append(x[1])
+
+        self.currentPopulation = tmp
 
     # Metoda mutacji
 
@@ -177,18 +191,24 @@ class Genetyczny:
             x = random.randint(0, 1000)
 
             if x <= 1000*self.probabilityOfMutation:
-                a = random.randint(0, len(self.tab))
-                b = random.randint(0, len(self.tab))
+                a = random.randint(0, len(self.tab) - 1)
+                b = random.randint(0, len(self.tab) - 1)
 
                 i.path[a], i.path[b] = i.path[b], i.path[a]
 
     def rateAll(self):
-
+        flag = False
         for i in self.currentPopulation:
             i.calculateValueOfThePath(self.tab)
             if i.valueOfPath < self.bestValue:
                 self.bestValue = i.valueOfPath
                 self.bestSolution = i.path
+                self.displayBest()
+                self.ifBetter = 0
+                flag = True
+
+        if flag == False:
+            self.ifBetter += 1
 
     def displayPopulation(self):
         for i in self.currentPopulation:
@@ -196,8 +216,8 @@ class Genetyczny:
 
     def displayBest(self):
         print("#########################################")
-        print("## Najlepszy wynik: ",self.bestValue)
-        print("## Ścieżka: ",self.bestSolution)
+        print("## Najlepszy wynik: ", self.bestValue)
+        print("## Ścieżka: ", self.bestSolution)
         print("#########################################")
 
 class Chromosome:
