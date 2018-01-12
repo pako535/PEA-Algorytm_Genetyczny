@@ -4,13 +4,13 @@ import itertools
 import sys
 import math
 
-def creatematrix_TSP(sciezka):
+def creatematrix_TSP(sciezka, cos):
 
     file = 'tsp/' + sciezka
     tekst = open(file).read()
     # print(tekst)
     tekst = tekst.split()
-    tekst = tekst[19:]
+    tekst = tekst[cos:]
     # print(tekst)
 
     dl = len(tekst)
@@ -53,14 +53,14 @@ def creatematrix_TSP(sciezka):
     return tab
 
 
-def creatematrix_ATSP(sciezka):
+def creatematrix_ATSP(sciezka, cos, coscos):
     file = 'atsp/' + sciezka      # + 'ftv70.atsp'
     tekst = open(file).read()
 
     #print(tekst)
     tekst = tekst.split()
     #print(tekst)
-    tekst = tekst[16:]
+    tekst = tekst[cos:]
     #print(tekst)
 
     dl = len(tekst)
@@ -79,7 +79,7 @@ def creatematrix_ATSP(sciezka):
 
     for i in range(dimension):
         for j in range(dimension):
-            if tekst[counter] =='9999': # '9999':100000000
+            if tekst[counter] ==coscos: # '9999':100000000
                 tekst[counter] = infinity
             tab[i][j] = int(tekst[counter])
             counter += 1

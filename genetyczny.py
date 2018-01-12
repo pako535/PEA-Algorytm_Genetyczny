@@ -19,14 +19,16 @@ class Genetyczny:
 
 
     def run(self):
-        while(self.ifBetter < 30):
+        licznik = 0
+        while(self.ifBetter < 50 and licznik < 1000):
             self.selection()
             self.crossAll()
             self.mutationAll()
             self.rateAll()
+            licznik += 1
             # # self.displayPopulation()
 
-
+    # Funkcja generująca populaje
     def generateTheInitialPopulation(self):
         # sizePopulation = len(self.tab
 
@@ -37,9 +39,15 @@ class Genetyczny:
             self.currentPopulation.append(chrom)
 
 
-        print("GENERACJA POCZĄTKOWA")
-        for i in range(len(self.currentPopulation)):
-            print(self.currentPopulation[i].path," ", self.currentPopulation[i].valueOfPath)
+        # print("GENERACJA POCZĄTKOWA")
+        # for i in range(len(self.currentPopulation)):
+        #     print(self.currentPopulation[i].path," ", self.currentPopulation[i].valueOfPath)
+
+    def generateGreedyTheInitialPopulation(self):
+
+        possibleVerticles  = []
+        for i in range(len(self.tab)):
+            possibleVerticles.append(i)
 
     # Metoda Selekcji Turniejowej
 
@@ -111,7 +119,11 @@ class Genetyczny:
                             break
                         else:
                             try:
-                                child1.insert(0, map[0][map[1].index(tmp)])
+                                if map[0][map[1].index(tmp)] not in child1:
+                                    child1.insert(0, map[0][map[1].index(tmp)])
+                                else:
+                                    child1.insert(0, '_')
+                                    flag = True
                             except:
                                 child1.insert(0 ,'_')
                                 flag = True
@@ -132,7 +144,11 @@ class Genetyczny:
                             break
                         else:
                             try:
-                                child1.append(map[0][map[1].index(tmp)])
+                                if map[0][map[1].index(tmp)] not in child1:
+                                    child1.append(map[0][map[1].index(tmp)])
+                                else:
+                                    child1.append('_')
+                                    flag = True
                             except:
                                 child1.append('_')
                                 flag = True
@@ -154,7 +170,11 @@ class Genetyczny:
                             break
                         else:
                             try:
-                                child2.insert(0, map[1][map[0].index(tmp)])
+                                if map[1][map[0].index(tmp)]not in child2:
+                                    child2.insert(0, map[1][map[0].index(tmp)])
+                                else:
+                                    child2.insert(0, '_')
+                                    flag = True
                             except:
                                 child2.insert(0, '_')
                                 flag = True
@@ -171,7 +191,11 @@ class Genetyczny:
                             break
                         else:
                             try:
-                                child2.append(map[1][map[0].index(tmp)])
+                                if map[1][map[0].index(tmp)] not in child2:
+                                    child2.append(map[1][map[0].index(tmp)])
+                                else:
+                                    child2.append('_')
+                                    flag = True
                             except:
                                 child2.append('_')
                                 flag = True
