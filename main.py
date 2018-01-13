@@ -3,13 +3,14 @@ import random
 import time
 import genetyczny
 import os
+import testy
 
 
-def run(tab):
+def run(tab, probability=0.08, population=1000):
     start = time.clock()
     int = random.randint(0, 100)
 
-    gen = genetyczny.Genetyczny(tab, 0.01, 1000)
+    gen = genetyczny.Genetyczny(tab, probability, population)
 
     end = time.clock()
     total = end - start
@@ -20,10 +21,10 @@ def pressAnyKeyToContinue():
 
 
 spisTSP = "1 -> 'gr17'\n2 -> 'gr24'\n3 -> 'gr48'\n4 -> 'gr120'"
-spisATSP = "1 -> 'br17'\n2 -> 'ftc33'\n3 -> 'ftv47'\n4 -> 'ftv70'"
+spisATSP = "1 -> 'br17'\n2 -> 'ftv33'\n3 -> 'ftv47'\n4 -> 'ftv70'\n5 -> 'ftv170'"
 flag = False
 while (flag != True):
-    chose = input("Dla jakich instancji chcesz rozwiązać problem \n1-> Symetrycznych\n2-> Asymetrycznych\n3 -> Wyjscie")
+    chose = input("Dla jakich instancji chcesz rozwiązać problem \n1-> Symetrycznych\n2-> Asymetrycznych\n3 -> Testy\n4 -> Wyjscie")
     if chose == '1':
         print("Wybierz:")
         insTSP = input(spisTSP)
@@ -75,11 +76,19 @@ while (flag != True):
             run(tab)
             pressAnyKeyToContinue()
             os.system("cls")
+        elif insTSP == '5':
+            tab = macierz.creatematrix_ATSP('ftv170.atsp', 15, '100000000')
+            run(tab)
+            pressAnyKeyToContinue()
+            os.system("cls")
         else:
             print("Zły wybór")
             pressAnyKeyToContinue()
             os.system("cls")
     elif chose == '3':
+        test = testy.Test()
+        test.start()
+    elif chose == '4':
         flag = True
     else:
         print("Zły wybór")
