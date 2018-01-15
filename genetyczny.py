@@ -22,7 +22,7 @@ class Genetyczny:
     def run(self):
         licznik = 0
         while(self.ifBetter < 50 and licznik < 1000):
-            self.selection()
+            self.selection(licznik)
             self.crossAll()
             self.mutationAll()
             self.rateAll()
@@ -87,34 +87,42 @@ class Genetyczny:
 
     # Metoda Selekcji Turniejowej
 
-    def selection(self):
-        self.podglad = {}
-        newPopulation = []
-        for i in range(self.populationSize):
-            group = []
-            value = []
-            for j in range(len(self.tab) * 5):
-                tmp = random.choice(self.currentPopulation)
-                group.append(tmp)
-                value.append(tmp.valueOfPath)
-            mini = min(value)
-            chose = group[value.index(mini)]
-            newPopulation.append(chose)
-            self.podglad[mini] = chose
-        self.currentPopulation = newPopulation
+    def selection(self, k):
 
+        if k > 25:
+
+            newPopulation = []
+            for i in range(self.populationSize):
+                group = []
+                value = []
+                for j in range(len(self.tab) * 5):
+                    tmp = random.choice(self.currentPopulation)
+                    group.append(tmp)
+                    value.append(tmp.valueOfPath)
+                mini = min(value)
+                chose = group[value.index(mini)]
+                newPopulation.append(chose)
+
+            self.currentPopulation = newPopulation
+        else:
+            newPopulation = []
+            value = []
+            for i in self.currentPopulation:
+                value.append(i.valueOfPath)
+
+            for i in range(self.populationSize):
+                x = min(value)
+                value.remove(x)
+
+                for j in range(len(self.currentPopulation)):
+                    if self.currentPopulation[j].valueOfPath == x:
+                        chose = self.currentPopulation[j]
+
+                newPopulation.append(chose)
+            self.currentPopulation = newPopulation
     # Metody krzyżowania
 
     def crossPMX(self, x, y):
-
-        # x = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        # y = [5, 3, 6, 7, 8, 1, 2, 9, 4]
-
-        # x = [3, 2, 1, 4, 8, 7, 6, 5, 9]
-        # y = [4, 9, 6, 1, 2, 8, 5, 3, 7]
-
-        # x = [7, 8, 4, 5, 6, 9, 1, 2, 3]
-        # y = [5, 3, 6, 7, 8, 1, 2, 9, 4]
 
         # wybór zakrezu do krzyżowania
         while True:
