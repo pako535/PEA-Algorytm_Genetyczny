@@ -30,8 +30,7 @@ class Test:
                         avgTime = avgTime/10
                         avgValue = avgValue/10
                         file = open("TestyTSP.txt", "a")
-                        file.write(i + ";" + str(popu) + ";" + str(prop) + ";" + str(avgTime) + ";" + str(avgValue)
-                                   + "\n")
+                        file.write(i + ";" + str(avgTime) + ";" + "\n")
 
                     else:
                         for k in range(5):
