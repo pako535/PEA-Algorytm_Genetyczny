@@ -6,10 +6,10 @@ import macierz
 class Test:
 
     def __init__(self):
-        self.scieżkaTSP = ['gr17.tsp', 'gr24.tsp', 'gr48.tsp', 'gr120.tsp']
-        self.scieżkaATSP = ['br17.atsp', 'ftv33.atsp', 'ftv47.atsp', 'ftv70.atsp', 'ftv170.atsp']
-        self.populationSize = [500, 1000, 1500]
-        self.probability = [0.01, 0.04, 0.08, 0.1]
+        self.scieżkaTSP = ['gr17.tsp', 'gr24.tsp']#, 'gr48.tsp', 'gr120.tsp']
+        self.scieżkaATSP = ['br17.atsp', 'ftv33.atsp']#, 'ftv47.atsp', 'ftv70.atsp', 'ftv170.atsp']
+        self.populationSize = [500]#, 1000, 1500]
+        self.probability = [0.01]#, 0.04, 0.08, 0.1]
 
     def start(self):
 
@@ -44,8 +44,7 @@ class Test:
                         avgTime = avgTime / 5
                         avgValue = avgValue / 5
                         file = open("TestyTSP.txt", "a")
-                        file.write(i + ";" + str(popu) + ";" + str(prop) + ";" + str(avgTime) + ";" + str(avgValue)
-                                   + "\n")
+                        file.write(i + ";" + str(avgTime) + ";" + "\n")
 
 ########################################################################################################################
         # Testy dla ATSP
